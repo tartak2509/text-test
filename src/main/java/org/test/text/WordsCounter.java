@@ -35,16 +35,16 @@ public final class WordsCounter {
 
 	public static void main(final String[] args) throws FileNotFoundException, IOException {
 
-		final String fileName = args.length < 1 ? Thread.currentThread().getContextClassLoader().getResource(DEFAULT_FILENAME).toString() : args[0];
+		final String fileName = args.length < 1 ? Thread.currentThread().getContextClassLoader().getResource(DEFAULT_FILENAME).getPath() : args[0];
 		try (final Stream<String> stream = Files.lines(Paths.get(fileName))) {
 			final Map<String, Integer> wordsFrequency = calculateWords(stream);
 			final int topSize = getTopSize(args);
 			System.out.println(String.format("Those are your top %s words in file : '%s'", topSize, fileName));
 			wordsFrequency.entrySet().stream().sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())).limit(topSize)
-			.forEach(entry -> System.out.println(String.format("word: '%s', occurrences: %s", entry.getKey(), entry.getValue())));
-
+			.forEach(entry ->
+			System.out.println(String.format("Word: '%s', Occurrences: %s", entry.getKey(), entry.getValue()))
+					);
 		}
-
 	}
 
 	private static int getTopSize(final String[] args) {
@@ -52,7 +52,7 @@ public final class WordsCounter {
 			return Integer.valueOf(args[1]);
 		}
 		try (Scanner scanner = new Scanner(System.in)) {
-			System.out.println("Could you please input top size :\n");
+			System.out.println("Could you please input top size :");
 			return scanner.nextInt();
 		}
 
